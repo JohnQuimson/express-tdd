@@ -21,7 +21,7 @@ test('createSlug dovrebbe ritornare una stringa in lowercase', () => {
 
 // spazi replaced con -
 test('createSlug dovrebbe ritornare una stringa con gli spazi sostituiti da -', () => {
-  const slug = createSlug('Titolo Con Spazi', posts);
+  const slug = createSlug('Titolo   Con Spazi', posts);
   expect(slug).toBe('titolo-con-spazi');
 });
 
