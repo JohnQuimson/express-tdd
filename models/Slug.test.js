@@ -1,30 +1,32 @@
-// importazione non necessaria, ma usata per intellisense
 const { test, expect } = require('@jest/globals');
-const fs = require('fs');
-const path = require('path');
+// const { createSlug } = require('./createSlug.js');
 
-const getSlug = () => {
-  const filePath = path.resolve(__dirname, '../db/posts.json');
-  const fileContent = fs.readFileSync(filePath, 'utf8');
-  const posts = JSON.parse(fileContent);
-  return posts.map((post) => post.slug);
-};
+const posts = [
+  { title: 'Ciambellone', slug: 'ciambellone' },
+  { title: 'Cracker alla barbabietola', slug: 'cracker-alla-barbabietola' },
+  { title: 'Pane fritto dolce', slug: 'pane-fritto-dolce' },
+];
 
-const createSlug = (string) => {
-  const array = getSlug();
-  let originalSlug = string.toLowerCase().replaceAll(' ', '-');
-  let newSlug = originalSlug;
-  // counter per garantire l'unicità dello slug
-  let counter = 1;
-  while (array.includes(newSlug)) {
-    newSlug = `${originalSlug}-${counter}`;
-    counter++;
+const createSlug = (title, posts) => {
+  const slug = title.toLowerCase().replace(/\s+/g, '-');
+  const existingSlugs = posts.map((post) => post.slug);
+  if (!existingSlugs.includes(slug)) {
+    return slug;
   }
-  return newSlug;
+  // counter per rendere unico lo slug se è già presente
+  let i = 1;
+  while (existingSlugs.includes(slug + '-' + i)) {
+    i++;
+  }
+  return slug + '-' + i;
 };
 
-// return stringa
 test('createSlug dovrebbe ritornare una stringa', () => {
-  const slug = createSlug('titolo di esempio');
+  const slug = createSlug('titolo', posts);
   expect(typeof slug).toBe('string');
+});
+
+test('createSlug dovrebbe ritornare una stringa in lowercase', () => {
+  const slug = createSlug('titolo', posts);
+  expect(slug).toBe(slug.toLowerCase());
 });
