@@ -15,7 +15,7 @@ const createSlug = (title, posts) => {
   }
 
   // creo lo slug dal titolo -> minuscolo e replace spazi con -
-  let slug = title.toLowerCase().replace(/\s+/g, '-');
+  let slug = title.toLowerCase().replaceAll(' ', '-');
 
   // controllo presenza doppio slug
   const existingSlugs = posts.map((post) => post.slug);
